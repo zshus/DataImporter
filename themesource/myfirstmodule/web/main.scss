@@ -1,2 +1,9 @@
 @import '../../../theme/web/custom-variables';
 
+.nodisplay{
+    display: none;
+    color:red;
+}
+.display{
+    color:blue;
+}

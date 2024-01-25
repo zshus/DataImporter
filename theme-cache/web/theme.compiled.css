@@ -26840,4 +26840,13 @@ input[type=checkbox].three-state-checkbox + .control-label {
   pointer-events: none;
 }
 
+.nodisplay {
+  display: none;
+  color: red;
+}
+
+.display {
+  color: blue;
+}
+
 /*# sourceMappingURL=theme.compiled.css.map */
