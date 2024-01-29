@@ -59,7 +59,33 @@ export async function Export_To_Excel(datagridName, fileName, sheetName, include
                         worksheet["!cols"] = headers.map(header => ({
                             wch: header.length + 10
                         }));
-                        const workbook = utils.book_new();
+
+
+                    
+                    var colNum = utils.decode_col("B"); //decode_col converts Excel col name to an integer for col #
+                    // var fmt = '#,##0_);\\("$"#,##0\\)'; // or '"$"#,##0.00_);[Red]\\("$"#,##0.00\\)' or any Excel number format
+                    var colNumA = utils.decode_col("A");
+
+                    /* get worksheet range */
+                    var range = utils.decode_range(worksheet['!ref']);
+                    for(var i = range.s.r + 1; i <= range.e.r; ++i) {
+                    /* find the data cell (range.s.r + 1 skips the header row of the worksheet) */
+                        var ref = utils.encode_cell({r:i, c:colNum});
+                        var refA = utils.encode_cell({r:i, c:colNumA});
+                        /* if the particular row did not contain data for the column, the cell will not be generated */
+                        //if(!worksheet[ref]) continue;
+                        /* `.t == "n"` for number cells */
+                        //if(worksheet[ref].t != 'n') continue;
+                        /* assign the `.z` number format */
+                        worksheet[ref].z ="#,##0"; //'"$"#,##0.00_);[Red]\\("$"#,##0.00\\)';
+                        worksheet[refA].z = "yyyy-mm-dd hh:mm:ss";
+                    }
+
+                     
+
+                        // worksheet["B2"].z='#,##0_);\\("$"#,##0\\)';
+                    
+                        const workbook = utils.book_new();                        
                         utils.book_append_sheet(workbook, worksheet, sheetName === "" ? "Data" : sheetName);
                         writeFileXLSX(workbook, `${fileName}.xlsx`);
                         resolve(true);
